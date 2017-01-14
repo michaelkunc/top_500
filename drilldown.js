@@ -1,6 +1,7 @@
-
-
-var fifties = {decade: "50's", years: {'1950': 1,'1951': 2, '1952': 4}}
+var decades = [{ name: 'fifties', decade: "50's", years: { '1950': 1, '1951': 2, '1952': 4 } },
+    { name: 'sixties', decade: "60's", years: { '1962': 2, '1963': 5, '1966': 4, '1967': 1 } },
+    { name: 'seventies', decade: "70's", years: { '1972': 4, '1974': 7, '1976': 4, '1978': 10 } }
+]
 
 function chart() {
 
@@ -32,63 +33,52 @@ function chart() {
         series: [{
             name: 'Decade',
             colorByPoint: true,
-            data: [{
-                name: fifties.decade,
-                y: Object.values(fifties.years).reduce(add,0),
-                drilldown: fifties.decade
-            }
-            // , {
-            //     name: 'Fruits',
-            //     y: 2,
-            //     drilldown: 'fruits'
-            // }, {
-            //     name: 'Cars',
-            //     y: 4,
-            //     drilldown: 'cars'
-            // }
-            ]
+            data: all_data(decades)
         }],
         drilldown: {
-            series: [{
-                id: fifties.decade,
-                data: drilldown(fifties.years)
-            }, {
-                id: 'fruits',
-                data: [
-                    ['Apples', 4],
-                    ['Oranges', 2]
-                ]
-            }, {
-                id: 'cars',
-                data: [
-                    ['Toyota', 4],
-                    ['Opel', 2],
-                    ['Volkswagen', 2]
-                ]
-            }]
+            series: all_series(decades)
         }
     });
 };
 
 
 //utility functions
-function add(a,b){
+function add(a, b) {
     return a + b;
 }
 
-function drilldown(decade_object){
+
+function all_data(decade_list) {
+    var all_data = []
+    decade_list.forEach(function(decade_object) {
+        all_data.push({
+            name: decade_object.decade,
+            y: Object.values(decade_object.years).reduce(add, 0),
+            drilldown: decade_object.decade
+        })
+    })
+    return all_data
+}
+
+function drilldown_values(decade_object) {
     values = []
-    for(var key in decade_object){
+    for (var key in decade_object) {
         values.push([key, decade_object[key]])
     }
     return values
 
 }
 
+function all_series(decade_list) {
+    var all_series = []
+    decade_list.forEach(function(decade_object) {
+        all_series.push({
+            id: decade_object.decade,
+            data: drilldown_values(decade_object.years)
+        })
+    })
+    return all_series
+}
 
-
-
-
-var list = [1,2,3,4,5,6]
 
 chart();

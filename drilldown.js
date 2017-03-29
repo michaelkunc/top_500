@@ -3,7 +3,8 @@ var decades = [{ name: 'fifties', decade: "50's", years: { '1950': 1, '1951': 2,
     { name: 'seventies', decade: "70's", years: { '1972': 4, '1974': 7, '1976': 4, '1978': 10 } }
 ]
 
-function chart() {
+
+function decade_year_chart() {
 
     // Create the chart
     Highcharts.chart('container', {
@@ -81,4 +82,4 @@ function all_series(decade_list) {
 }
 
 
-chart();
+decade_year_chart();

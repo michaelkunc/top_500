@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -18,18 +18,20 @@ def visualization():
 
     script, div = components(by_year)
 
-    return """
-	<!doctype html>
-	<head>
-	 {bokeh_css}
-	</head>
-	<body>
-	 {div}
-	 {bokeh_js}
-	 {script}
-	</body>
-	 """.format(script=script, div=div, bokeh_css=CDN.render_css(),
-             bokeh_js=CDN.render_js())
+ #    return """
+    # <!doctype html>
+    # <head>
+    #  {bokeh_css}
+    # </head>
+    # <body>
+    #  {div}
+    #  {bokeh_js}
+    #  {script}
+    # </body>
+    #  """.format(script=script, div=div, bokeh_css=CDN.render_css(),
+ #             bokeh_js=CDN.render_js())
+    return render_template('basic.html', script=script, div=div, bokeh_css=CDN.render_css(), bokeh_js=CDN.render_js())
+
 
 if __name__ == '__main__':
     app.run()

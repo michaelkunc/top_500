@@ -20,10 +20,6 @@ def add_decade(row):
         return "50's"
 df['Decade'] = df.apply(lambda row: add_decade(row), axis=1)
 
-# albums_by_decade_year = df.groupby(['Decade', 'Year']).size()
-# albums_by_decade_year.columns = ['Decade', 'Year', 'Album Count']
-# albums_by_decade_year.to_csv('csvs/albums_by_decade.csv')
-
 
 def group_and_export(Attribute):
     if isinstance(Attribute, list):

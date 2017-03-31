@@ -4,8 +4,9 @@ app = Flask(__name__)
 
 import pandas as pd
 import bokeh.charts as bc
-from bokeh.resources import CDN
+from bokeh.resources import INLINE
 from bokeh.embed import components
+from bokeh.util.string import encode_utf8
 
 
 @app.route("/")
@@ -16,22 +17,15 @@ def visualization():
     by_year = bc.Bar(albums_by_year, 'Year', values='Album Count',
                      title='Albums By Year', legend=None, bar_width=.6)
 
+    js_resources = INLINE.render_js()
+    css_resources = INLINE.render_css()
+
     script, div = components(by_year)
 
- #    return """
-    # <!doctype html>
-    # <head>
-    #  {bokeh_css}
-    # </head>
-    # <body>
-    #  {div}
-    #  {bokeh_js}
-    #  {script}
-    # </body>
-    #  """.format(script=script, div=div, bokeh_css=CDN.render_css(),
- #             bokeh_js=CDN.render_js())
-    return render_template('basic.html', script=script, div=div, bokeh_css=CDN.render_css(), bokeh_js=CDN.render_js())
+    html = render_template('basic.html', plot_script=script, plot_div=div,
+                           js_resources=js_resources, css_resources=css_resources)
 
+    return encode_utf8(html)
 
 if __name__ == '__main__':
     app.run()

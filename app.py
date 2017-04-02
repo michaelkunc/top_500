@@ -21,7 +21,7 @@ def visualization():
     by_decade = bc.Bar(album_df.albums_by_decade,
                        title='Albums By Decade', legend=None)
 
-    by_artist = bc.Line(album_df.albums_by_artist_top_ten, legend=None)
+    by_artist = bc.Line(album_df.albums_by_artist(20), legend=None)
 
     script, year_div = components(by_year)
     script2, decade_div = components(by_decade)

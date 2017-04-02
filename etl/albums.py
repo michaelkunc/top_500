@@ -22,6 +22,9 @@ class Albums(object):
         else:
             return "1950's"
 
+    def albums_by_artist(self, number_of_artists):
+        return self.df.groupby('Artist').size().sort_values(ascending=False).head(number_of_artists)
+
     @property
     def albums_by_year(self):
         return self.df.groupby('Year').size()

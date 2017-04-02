@@ -8,19 +8,19 @@ class Albums(object):
 
     def add_decade(self, row):
         if row['Year'] > 2010:
-            return "10's"
+            return "2010's"
         if row['Year'] > 2000:
-            return "00's"
+            return "2000's"
         if row['Year'] > 1990:
-            return "90's"
+            return "1990's"
         if row['Year'] > 1980:
-            return "80's"
+            return "1980's"
         if row['Year'] > 1970:
-            return "70's"
+            return "1970's"
         if row["Year"] > 1960:
-            return "60's"
+            return "1960's"
         else:
-            return "50's"
+            return "1950's"
 
     @property
     def albums_by_year(self):
@@ -32,5 +32,6 @@ class Albums(object):
             lambda row: self.add_decade(row), axis=1)
         return self.df.groupby('Decade').size()
 
-# album = Album()
-# print(album.albums_by_year)
+    @property
+    def albums_by_artist_top_ten(self):
+        return self.df.groupby('Artist').size().sort_values(ascending=False).head(10)

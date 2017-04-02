@@ -1,3 +1,4 @@
-{% extends "layout.html" %} {% block content %} {{year_script | safe}} {{decade_script | safe}}
+{% extends "layout.html" %} {% block content %} {{year_script | safe}} {{decade_script | safe}} {{artist_script | safe }}
 <h1>THis is in the extended template now~</h1> {{year_div|safe }}
-<h1>This is where the second plot goes!!!</h1> {{ decade_div| safe}} {% endblock %}
+<h1>This is where the second plot goes!!!</h1> {{ decade_div| safe}}
+<h1>This is where the third plot goes!!!</h1> {{ artist_div| safe}} {% endblock %}

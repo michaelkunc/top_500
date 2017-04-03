@@ -21,32 +21,32 @@ class Album_Test(unittest.TestCase):
                           "Rock", "Rock & Roll, Psychedelic Rock", "1960's"], list(Album_Test.data.df.ix[0]))
 
     def test_min__max_years(self):
-        self.assertEqual((1955, 2011),
-                         tuple((int(Album_Test.data.df['Year'].min()), int(Album_Test.data.df['Year'].max()))))
+        self.assertEqual((1955, 2011), tuple(
+            (int(Album_Test.data.df['Year'].min()), int(Album_Test.data.df['Year'].max()))))
 
     def test_albums_by_year_shape(self):
-        self.assertEqual((56,), Album_Test.data.albums_by_year.shape)
+        self.assertEqual((56,), Album_Test.data.albums_by_year().shape)
 
     def test_albums_by_year_10th_row(self):
-        self.assertEqual(14, Album_Test.data.albums_by_year.iloc[10])
+        self.assertEqual(14, Album_Test.data.albums_by_year().iloc[10])
 
     def test_albums_by_year_total(self):
-        self.assertEqual(500, Album_Test.data.albums_by_year.sum())
+        self.assertEqual(500, Album_Test.data.albums_by_year().sum())
 
     def test_albums_by_decade_shape(self):
-        self.assertEqual((7,), Album_Test.data.albums_by_decade.shape)
+        self.assertEqual((7,), Album_Test.data.albums_by_decade().shape)
 
     def test_albums_by_decade_5th_row(self):
-        self.assertEqual(34, Album_Test.data.albums_by_decade.iloc[5])
+        self.assertEqual(34, Album_Test.data.albums_by_decade().iloc[5])
 
     def test_albums_by_decade_total(self):
-        self.assertEqual(500, Album_Test.data.albums_by_decade.sum())
+        self.assertEqual(500, Album_Test.data.albums_by_decade().sum())
 
     def test_albums_by_artist_top_ten_shape(self):
-        self.assertEqual((10,), Album_Test.data.albums_by_artist_top_ten.shape)
+        self.assertEqual((10,), Album_Test.data.albums_by_artist(10).shape)
 
     def test_albums_by_artist_top_ten_3rd_row(self):
-        self.assertEqual(10, Album_Test.data.albums_by_artist_top_ten.iloc[2])
+        self.assertEqual(10, Album_Test.data.albums_by_artist(10).iloc[2])
 
     def test_albums_by_artist_top_ten_total(self):
-        self.assertEqual(70, Album_Test.data.albums_by_artist_top_ten.sum())
+        self.assertEqual(70, Album_Test.data.albums_by_artist(10).sum())

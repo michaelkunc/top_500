@@ -15,13 +15,13 @@ def visualization():
     js_resources = INLINE.render_js()
     css_resources = INLINE.render_css()
 
-    by_year = bc.Area(album_df.albums_by_year,
+    by_year = bc.Area(album_df.albums_by_year(),
                       title='Albums By Year', legend=None)
 
-    by_decade = bc.Bar(album_df.albums_by_decade,
+    by_decade = bc.Bar(album_df.albums_by_decade(),
                        title='Albums By Decade', legend=None)
 
-    by_artist = bc.Line(album_df.albums_by_artist(20), legend=None)
+    by_artist = bc.Donut(album_df.albums_by_artist(5))
 
     script, year_div = components(by_year)
     script2, decade_div = components(by_decade)

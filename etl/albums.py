@@ -1,4 +1,5 @@
 import pandas as pd
+from collections import Counter
 
 
 class Albums(object):
@@ -8,14 +9,11 @@ class Albums(object):
         self.df['Decade'] = self.df.apply(
             lambda row: self._add_decade(row), axis=1)
 
-    def albums_by_artist(self, number_of_artists):
+    def albums_by_artist(self, number_of_artists=10):
         return self.df.groupby('Artist').size().sort_values(ascending=False).head(number_of_artists)
 
-    def albums_by_year(self):
-        return self.df.groupby('Year').size()
-
-    def albums_by_decade(self):
-        return self.df.groupby('Decade').size()
+    def group_by_attribute(self, attribute):
+        return self.df.groupby(attribute).size()
 
     def _add_decade(self, row):
         if row['Year'] > 2010:
@@ -32,3 +30,9 @@ class Albums(object):
             return "1960's"
         else:
             return "1950's"
+
+# in development for powering the scatter plot
+    def scatter_plot_sample_data(self):
+        return pd.DataFrame.from_dict({'1950': Counter(['Pop', 'Rock', 'Rock', 'Blues', 'Rock', 'Pop', 'Funk']),
+                                       '1960': Counter(['Rock', 'Alternative Rock', 'Funk', 'Pop', 'Alternative Rock', 'Hip Hop', ' Jazz'])},
+                                      orient='index')

@@ -8,6 +8,7 @@ class Albums(object):
         self.df = pd.read_csv('etl/csvs/albumlist.csv', encoding="ISO-8859-1")
         self.df['Decade'] = self.df.apply(
             lambda row: self._add_decade(row), axis=1)
+        self.df = self._normalize_genre()
 
     def albums_by_artist(self, number_of_artists=10):
         return self.df.groupby('Artist').size().sort_values(ascending=False).head(number_of_artists)
@@ -38,7 +39,7 @@ class Albums(object):
                                        '1957': Counter(['Funk', 'Soul', 'Rock', 'Rock', 'Blues', 'Rock', 'Pop', 'Jazz'])},
                                       orient='index').fillna(0)
 
-    def normalize_genre(self):
+    def _normalize_genre(self):
         self.df['normalized_genre'] = self.df['Genre'].str.replace(' & ', '')
         self.df['normalized_genre'] = self.df[
             'normalized_genre'].str.replace(' / ', ',')

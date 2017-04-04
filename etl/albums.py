@@ -16,6 +16,17 @@ class Albums(object):
     def group_by_attribute(self, attribute):
         return self.df.groupby(attribute).size()
 
+    def get_genres_by_years(self):
+        # this is a little ugly and I need to review, but the very basics of
+        # the plot work
+        genres = self.df
+        genres.index = pd.to_datetime(genres['Year'], format='%Y')
+        genres = genres['Normalized Genre'].resample('A').sum().apply(
+            pd.value_counts).stack().groupby(level=0,
+                                             group_keys=False).nlargest(5).unstack(level=-1).fillna(0)
+        del genres[0]
+        return genres
+
     def _add_decade(self, row):
         if row['Year'] > 2010:
             return "2010's"
@@ -32,17 +43,12 @@ class Albums(object):
         else:
             return "1950's"
 
-# in development for powering the scatter plot
-    def scatter_plot_sample_data(self):
-        return pd.DataFrame.from_dict({'1955': Counter(['Pop', 'Rock', 'Rock', 'Rock', 'Pop', 'Pop', 'Pop', 'Blues']),
-                                       '1956': Counter(['Rock', 'Rock', 'Rock', 'Pop', 'Pop', 'Rock']),
-                                       '1957': Counter(['Funk', 'Soul', 'Rock', 'Rock', 'Blues', 'Rock', 'Pop', 'Jazz'])},
-                                      orient='index').fillna(0)
-
     def _normalize_genre(self):
-        self.df['normalized_genre'] = self.df['Genre'].str.replace(' & ', '')
-        self.df['normalized_genre'] = self.df[
-            'normalized_genre'].str.replace(' / ', ',')
-        self.df['normalized_genre'] = self.df[
-            'normalized_genre'].str.replace(', ', ',')
+        self.df['Normalized Genre'] = self.df['Genre'].str.replace(' & ', '')
+        self.df['Normalized Genre'] = self.df[
+            'Normalized Genre'].str.replace(' / ', ',')
+        self.df['Normalized Genre'] = self.df[
+            'Normalized Genre'].str.replace(', ', ',')
+        self.df['Normalized Genre'] = self.df['Normalized Genre'].map(
+            lambda x: [i.strip() for i in x.split(',')])
         return self.df

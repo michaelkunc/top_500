@@ -14,11 +14,11 @@ class Album_Test(unittest.TestCase):
 
     def test_column_headers(self):
         self.assertEqual(['Number', 'Year', 'Album', 'Artist',
-                          'Genre', 'Subgenre', 'Decade', 'normalized_genre'], list(Album_Test.data.df.columns))
+                          'Genre', 'Subgenre', 'Decade', 'Normalized Genre'], list(Album_Test.data.df.columns))
 
     def test_first_row(self):
         self.assertEqual([1, 1967, "Sgt. Pepper's Lonely Hearts Club Band", "The Beatles",
-                          "Rock", "Rock & Roll, Psychedelic Rock", "1960's", 'Rock'], list(Album_Test.data.df.ix[0]))
+                          "Rock", "Rock & Roll, Psychedelic Rock", "1960's", ['Rock']], list(Album_Test.data.df.ix[0]))
 
     def test_min__max_years(self):
         self.assertEqual((1955, 2011), tuple(
@@ -57,13 +57,17 @@ class Album_Test(unittest.TestCase):
         self.assertEqual(70, Album_Test.data.albums_by_artist(10).sum())
 
     def test_normalize_genre_ampersand(self):
-        self.assertEqual('Folk,World,Country', Album_Test.data.df[
-                         'normalized_genre'].iloc[476])
+        self.assertEqual(['Folk', 'World', 'Country'], Album_Test.data.df[
+                         'Normalized Genre'].iloc[476])
 
     def test_normalize_genre_slash(self):
-        self.assertEqual('Hip Hop,Funk,Soul', Album_Test.data.df[
-                         'normalized_genre'].iloc[480])
+        self.assertEqual(['Hip Hop', 'Funk', 'Soul'], Album_Test.data.df[
+                         'Normalized Genre'].iloc[480])
 
     def test_normalize_genre_extra_space(self):
-        self.assertEqual('Rock,Blues', Album_Test.data.df[
-                         'normalized_genre'].iloc[8])
+        self.assertEqual(['Rock', 'Blues'], Album_Test.data.df[
+                         'Normalized Genre'].iloc[8])
+
+    def test_get_genres_by_years(self):
+        self.assertEqual(
+            (57, 15,), Album_Test.data.get_genres_by_years().shape)

@@ -23,7 +23,7 @@ def visualization():
 
     by_artist = bc.Line(album_df.albums_by_artist(), legend=None)
 
-    by_genre = bc.Line(album_df.scatter_plot_sample_data(),
+    by_genre = bc.Line(album_df.get_genres_by_years(), legend='top_right',
                        title='Albums by Genre')
 
     script, year_div = components(by_year)

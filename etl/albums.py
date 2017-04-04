@@ -33,6 +33,15 @@ class Albums(object):
 
 # in development for powering the scatter plot
     def scatter_plot_sample_data(self):
-        return pd.DataFrame.from_dict({'1950': Counter(['Pop', 'Rock', 'Rock', 'Blues', 'Rock', 'Pop', 'Funk']),
-                                       '1960': Counter(['Rock', 'Alternative Rock', 'Funk', 'Pop', 'Alternative Rock', 'Hip Hop', ' Jazz'])},
-                                      orient='index')
+        return pd.DataFrame.from_dict({'1955': Counter(['Pop', 'Rock', 'Rock', 'Rock', 'Pop', 'Pop', 'Pop', 'Blues']),
+                                       '1956': Counter(['Rock', 'Rock', 'Rock', 'Pop', 'Pop', 'Rock']),
+                                       '1957': Counter(['Funk', 'Soul', 'Rock', 'Rock', 'Blues', 'Rock', 'Pop', 'Jazz'])},
+                                      orient='index').fillna(0)
+
+    def normalize_genre(self):
+        self.df['normalized_genre'] = self.df['Genre'].str.replace(' & ', '')
+        self.df['normalized_genre'] = self.df[
+            'normalized_genre'].str.replace(' / ', ',')
+        self.df['normalized_genre'] = self.df[
+            'normalized_genre'].str.replace(', ', ',')
+        return self.df

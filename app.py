@@ -23,15 +23,16 @@ def visualization():
 
     by_artist = bc.Line(album_df.albums_by_artist(), legend=None)
 
-    by_genre = bc.Scatter(album_df.scatter_plot_sample_data(),
-                          title='Albums by Genre', legend=None)
+    by_genre = bc.Line(album_df.scatter_plot_sample_data(),
+                       title='Albums by Genre')
 
     script, year_div = components(by_year)
     script2, decade_div = components(by_decade)
     artist_script, artist_div = components(by_artist)
     genre_script, genre_div = components(by_genre)
 
-    html = render_template('year.html', year_script=script,
+    html = render_template('year.html',
+                           year_script=script,
                            decade_script=script2, decade_div=decade_div,
                            year_div=year_div,
                            artist_script=artist_script,

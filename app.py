@@ -9,7 +9,7 @@ from etl import albums
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/albums")
 def visualization():
     album_df = albums.Albums()
     js_resources = INLINE.render_js()

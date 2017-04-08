@@ -24,3 +24,9 @@ def get_releases(mkid):
     url = 'https://music-api.musikki.com/v1/artists/100094349/releases?q=[release-type:album],[release-subtype:Studio]&appkey=4833d334c6b624fae1a5c35dbdd2f1aa&appid=9130e8b637ff1ecbe198740fd33c36df'
     response = requests.get(url)
     return [[i['mkid'], i['title']] for i in response.json()['results']]
+
+
+def get_reviews(album_mkid):
+    url = 'https://music-api.musikki.com/v1/releases/101252510/reviews?&appkey=4833d334c6b624fae1a5c35dbdd2f1aa&appid=9130e8b637ff1ecbe198740fd33c36df'
+    response = requests.get(url)
+    return [i['rating'] for i in response.json()['results']]

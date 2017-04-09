@@ -41,3 +41,6 @@ class SongTest(unittest.TestCase):
 
     def test_get_trouble_will_find_me_reviews_number(self):
         self.assertEqual(7, len(SongTest.trouble_reviews))
+
+    def test_album_score(self):
+        self.assertEqual(7.03, songs.album_score(SongTest.trouble_reviews))

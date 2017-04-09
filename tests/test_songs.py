@@ -44,3 +44,11 @@ class SongTest(unittest.TestCase):
 
     def test_album_score(self):
         self.assertEqual(7.03, songs.album_score(SongTest.trouble_reviews))
+
+    # def test_get_all_reviews_len(self):
+    #     self.assertEqual(6, len(songs.get_all_reviews(
+    #         SongTest.national_albums)))
+
+    # def test_total_all_album_scores(self):
+    #     self.assertEqual('in process', songs.get_all_album_scores(
+    #         songs.get_all_reviews(SongTest.national_albums)))

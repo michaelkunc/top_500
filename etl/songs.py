@@ -47,8 +47,8 @@ def album_score(value_scale):
     return round(sum(normalized_scores) / float(len(normalized_scores)), 2)
 
 
-# def get_all_reviews(album_mkids):
-#     return [get_reviews(i) for i in album_mkids]
+def get_all_reviews(album_mkids):
+    return [get_reviews(i[0]) for i in album_mkids]
 
 
 # def get_all_album_scores(value_scales):

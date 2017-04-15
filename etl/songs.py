@@ -1,17 +1,23 @@
 import requests
-import collections
 import os
 
-Api = collections.namedtuple('Api', 'url data params')
 
-last_fm = Api(url='http://ws.audioscrobbler.com//2.0/', data=None, params={'api_key': os.environ['LFM_KEY'], 'format': 'json',
-                                                                           'limit': '1', 'method': 'user.gettopartists', 'user': os.environ['LFM_USER']})
 REVIEWS_URL = 'https://music-api.musikki.com/v1/'
 
 
-def last_fm_top_artists():
-    response = requests.get(url=last_fm.url, params=last_fm.params)
-    return [{i['mbid']:[i['name'], i['playcount']]} for i in response.json()['topartists']['artist']]
+class Artists(object):
+    URL = 'http://ws.audioscrobbler.com//2.0/'
+
+    def __init__(self, number_of_artists):
+        self.params = {'api_key': os.environ['LFM_KEY'], 'format': 'json',
+                       'limit': number_of_artists, 'method': 'user.gettopartists', 'user': os.environ['LFM_USER']}
+
+    @property
+    def artists_playcounts(self):
+        response = requests.get(url=Artists.URL, params=self.params)
+        return [{i['mbid']:[i['name'], i['playcount']]} for i in response.json()['topartists']['artist']]
+
+# Legacy Code Below
 
 
 def musikki_mkid(foreign_id):

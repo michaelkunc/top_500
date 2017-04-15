@@ -4,9 +4,9 @@ import os
 
 Api = collections.namedtuple('Api', 'url data params')
 
-last_fm = Api(url='http://ws.audioscrobbler.com//2.0/', data=None, params={'api_key': os.environ['LAST_FM_KEY'], 'format': 'json',
-                                                                           'limit': '1', 'method': 'user.gettopartists', 'user': os.environ['LAST_FM_USER']})
-MUSIKKI_BASE_URL = 'https://music-api.musikki.com/v1/'
+last_fm = Api(url='http://ws.audioscrobbler.com//2.0/', data=None, params={'api_key': os.environ['LFM_KEY'], 'format': 'json',
+                                                                           'limit': '1', 'method': 'user.gettopartists', 'user': os.environ['LFM_USER']})
+REVIEWS_URL = 'https://music-api.musikki.com/v1/'
 
 
 def last_fm_top_artists():
@@ -16,21 +16,21 @@ def last_fm_top_artists():
 
 def musikki_mkid(foreign_id):
     url = '{3}artists/?q=[foreign-id:{0}],[foreign-service:]&appkey={1}&appid={2}'.format(
-        foreign_id, os.environ['MUSIKKI_APPKEY'], os.environ['MUSIKKI_APPID'], MUSIKKI_BASE_URL)
+        foreign_id, os.environ['KEY'], os.environ['ID'], REVIEWS_URL)
     response = requests.get(url)
     return response.json()['results'][0]['mkid']
 
 
 def get_releases(mkid):
     url = '{3}artists/{0}/releases?q=[release-type:album],[release-subtype:Studio]&appkey={1}&appid={2}'.format(mkid,
-                                                                                                                os.environ['MUSIKKI_APPKEY'], os.environ['MUSIKKI_APPID'], MUSIKKI_BASE_URL)
+                                                                                                                os.environ['KEY'], os.environ['ID'], REVIEWS_URL)
     response = requests.get(url)
     return [[i['mkid'], i['title']] for i in response.json()['results']]
 
 
 def get_reviews(album_mkid):
     url = '{3}releases/{0}/reviews?&appkey={1}&appid={2}'.format(album_mkid,
-                                                                 os.environ['MUSIKKI_APPKEY'], os.environ['MUSIKKI_APPID'], MUSIKKI_BASE_URL)
+                                                                 os.environ['KEY'], os.environ['ID'], REVIEWS_URL)
     response = requests.get(url)
     return [i['rating'] for i in response.json()['results']]
 

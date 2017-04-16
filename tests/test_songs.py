@@ -34,39 +34,26 @@ class ReviewsTest(unittest.TestCase):
         self.assertEqual(6, len(ReviewsTest.r.releases))
 
     def test_most_recent_release(self):
-        self.assertEqual([101252510, 'Trouble Will Find Me'],
+        self.assertEqual(101252510,
                          ReviewsTest.r.releases[0])
 
     def test_earliest_release(self):
-        self.assertEqual([100127863, 'The National'],
+        self.assertEqual(100127863,
                          ReviewsTest.r.releases[-1])
 
-    # def test_get_earliest_national_release(self):
-    #     self.assertEqual([100127863, 'The National'],
-    #                      ArtistTest.national_albums[-1])
+    def test_reviews(self):
+        self.assertEqual(18, len(ReviewsTest.r.reviews))
 
-    # def test_get_trouble_will_find_me_reviews_first(self):
-    #     self.assertEqual({'value': 9.0, 'scale': 0.0},
-    #                      ArtistTest.trouble_reviews[0])
+    def test_most_recent_trouble_will_find_me_review(self):
+        self.assertEqual({'value': 9.0, 'scale': 0.0},
+                         ReviewsTest.r.reviews[-18])
 
-    # def test_get_trouble_will_find_me_reviews_last(self):
-    #     self.assertEqual({'value': 4.0, 'scale': 5.0},
-    #                      ArtistTest.trouble_reviews[-1])
+    def test_most_recent_high_violet_review(self):
+        self.assertEqual({"value": 3.5, "scale": 5},
+                         ReviewsTest.r.reviews[-11])
 
-    # def test_get_trouble_will_find_me_reviews_number(self):
-    #     self.assertEqual(7, len(ArtistTest.trouble_reviews))
+    def test_earliest_boxer_review(self):
+        self.assertEqual({'value': 4, "scale": 5}, ReviewsTest.r.reviews[-4])
 
-    # def test_trouble_will_find_me_album_score(self):
-    #     self.assertEqual(7.03, songs.album_score(ArtistTest.trouble_reviews))
-
-    # def test_get_all_reviews_len(self):
-    #     self.assertEqual(6, len(songs.get_all_reviews(
-    #         ArtistTest.national_albums)))
-
-    # def test_most_recent_review(self):
-    #     self.assertEqual('Stuff', songs.get_all_reviews(
-    #         ArtistTest.national_albums[0]))
-
-    # def test_total_all_album_scores(self):
-    #     self.assertEqual('in process', songs.get_all_album_scores(
-    #         songs.get_all_reviews(ArtistTest.national_albums)))
+    # def test_average_score(self):
+    #     self.assertEqual(7.0, ReviewsTest.r.average_score)

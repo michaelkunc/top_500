@@ -17,14 +17,38 @@ class Artists(object):
         response = requests.get(url=Artists.URL, params=self.params)
         return [{i['mbid']:[i['name'], i['playcount']]} for i in response.json()['topartists']['artist']]
 
+
+class Reviews(object):
+    URL_START = 'https://music-api.musikki.com/v1/'
+    URL_END = '&appkey={0}&appid={1}'.format(
+        os.environ['KEY'], os.environ['ID'])
+
+    def __init__(self, foreign_artist_id):
+        self.foreign_id = foreign_artist_id
+
+    @property
+    def mkid(self):
+        url = '{0}artists/?q=[foreign-id:{1}],[foreign-service:]{2}'.format(
+            Reviews.URL_START, self.foreign_id, Reviews.URL_END)
+        response = requests.get(url)
+        return response.json()['results'][0]['mkid']
+
+    @property
+    def releases(self):
+        url = '{0}artists/{1}/releases?q=[release-type:album],[release-subtype:Studio]{2}'.format(
+            Reviews.URL_START, self.mkid, Reviews.URL_END)
+        response = requests.get(url)
+        return [[i['mkid'], i['title']] for i in response.json()['results']]
+
+
 # Legacy Code Below
 
 
-def musikki_mkid(foreign_id):
-    url = '{3}artists/?q=[foreign-id:{0}],[foreign-service:]&appkey={1}&appid={2}'.format(
-        foreign_id, os.environ['KEY'], os.environ['ID'], REVIEWS_URL)
-    response = requests.get(url)
-    return response.json()['results'][0]['mkid']
+# def musikki_mkid(foreign_id):
+#     url = '{3}artists/?q=[foreign-id:{0}],[foreign-service:]&appkey={1}&appid={2}'.format(
+#         foreign_id, os.environ['KEY'], os.environ['ID'], REVIEWS_URL)
+#     response = requests.get(url)
+#     return response.json()['results'][0]['mkid']
 
 
 def get_releases(mkid):

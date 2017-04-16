@@ -53,10 +53,10 @@ class Reviews(object):
     @property
     def average_score(self):
         normalized_scores = []
-        for i in self.reviews:
+        for i in filter(None, self.reviews):
             if i['scale'] == 5:
                 normalized_scores.append(i['value'] * 2)
-            elif i['scale'] == 0 or i['scale'] is None:
+            elif i['scale'] == 0:
                 pass
             else:
                 normalized_scores.append(i['value'])

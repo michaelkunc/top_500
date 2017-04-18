@@ -1,12 +1,19 @@
 from flask import Flask, render_template
-
 import bokeh.charts as bc
 from bokeh.embed import components
 from bokeh.resources import INLINE
 from bokeh.util.string import encode_utf8
+from flask_pymongo import Pymongo
+
+
 from etl import albums
 
+
 app = Flask(__name__)
+app.config['MONGO_DBNAME'] = 'artists'
+app.config['MONGO_URI'] = 'mongodb://localhost:27017/artists'
+
+mongo = Pymongo
 
 
 @app.route("/albums")

@@ -72,7 +72,7 @@ def load_data_to_mongo(number_of_artists, db, collection):
     collection = db[collection]
 
     artist = Artists(number_of_artists)
-    for a in artist.artists_playcounts[85:]:
+    for a in artist.artists_playcounts:
         try:
             reviews = Reviews(a[0])
             artist_id, artist, playcount, avg_score = a[
@@ -85,7 +85,7 @@ def load_data_to_mongo(number_of_artists, db, collection):
         except IndexError:
             print('{0} could not be loaded to the db'.format(a))
 
-load_data_to_mongo(100, 'top_500', 'artists')
+# load_data_to_mongo(100, 'top_500', 'artists')
 
 # artists = Artists(100)
 

@@ -3,17 +3,14 @@ import bokeh.charts as bc
 from bokeh.embed import components
 from bokeh.resources import INLINE
 from bokeh.util.string import encode_utf8
-from flask_pymongo import Pymongo
+from flask_pymongo import MongoClient
+import pandas as pd
 
 
 from etl import albums
 
 
 app = Flask(__name__)
-app.config['MONGO_DBNAME'] = 'artists'
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/artists'
-
-mongo = Pymongo
 
 
 @app.route("/albums")
@@ -49,6 +46,25 @@ def visualization():
                            js_resources=js_resources, css_resources=css_resources)
 
     return encode_utf8(html)
+
+
+# @app.route('/artists')
+# def artists_visualizatioons():
+#     client = MongoClient('localhost', 27017)
+#     db = client['top_500']
+#     collection = db['artists']
+#     df = pd.DataFrame(list(collection.find()))
+
+#     scatter = bc.Scatter(df, x='playcount', y='average_score')
+
+#     scatter_script, scatter_div = components(scatter)
+
+#     html = render_template('artists.html',
+#                            scatter_script=scatter_script,
+#                            scatter_div=scatter_div)
+
+#     return encode_utf8(html)
+
 
 if __name__ == '__main__':
     app.run()

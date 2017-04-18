@@ -6,6 +6,8 @@ from bokeh.util.string import encode_utf8
 from flask_pymongo import MongoClient
 import pandas as pd
 
+# from bokeh.sampledata.autompg import autompg as df
+
 
 from etl import albums
 
@@ -48,22 +50,27 @@ def visualization():
     return encode_utf8(html)
 
 
-# @app.route('/artists')
-# def artists_visualizatioons():
-#     client = MongoClient('localhost', 27017)
-#     db = client['top_500']
-#     collection = db['artists']
-#     df = pd.DataFrame(list(collection.find()))
+@app.route('/artists')
+def artists_visualizatioons():
+    js_resources = INLINE.render_js()
+    css_resources = INLINE.render_css()
+    client = MongoClient('localhost', 27017)
+    db = client['top_500']
+    collection = db['artists']
+    df = pd.DataFrame(list(collection.find(
+        {'average_score': {'$ne': 'No Reviews'}}, {'artist_name': 1, 'playcount': 1, 'average_score': 1, '_id': 0}).sort('playcount', 1)))
 
-#     scatter = bc.Scatter(df, x='playcount', y='average_score')
+    scatter = bc.Scatter(df, x='playcount', y='average_score', title="Album Rating vs Playcount",
+                         xlabel="Last FM Playcount", ylabel="Average Album Rating")
+    scatter_script, scatter_div = components(scatter)
 
-#     scatter_script, scatter_div = components(scatter)
+    html = render_template('artists.html',
+                           scatter_script=scatter_script,
+                           scatter_div=scatter_div,
+                           js_resources=js_resources,
+                           css_resources=css_resources)
 
-#     html = render_template('artists.html',
-#                            scatter_script=scatter_script,
-#                            scatter_div=scatter_div)
-
-#     return encode_utf8(html)
+    return encode_utf8(html)
 
 
 if __name__ == '__main__':

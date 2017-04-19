@@ -75,17 +75,17 @@ def load_data_to_mongo(number_of_artists, db, collection):
     for a in artist.artists_playcounts:
         try:
             reviews = Reviews(a[0])
-            artist_id, artist, playcount, avg_score = a[
-                0], a[1], a[2], reviews.average_score
+            artist_id, artist, playcount, avg_score, releases = a[
+                0], a[1], a[2], reviews.average_score, reviews.releases
             key = {'_id': artist_id}
             data = {'artist_name': artist, 'playcount': playcount,
-                    'average_score': avg_score}
+                    'average_score': avg_score, 'releases': releases}
             collection.replace_one(key, data, True)
             print('{0} was loaded to MongoDB!'.format(data))
         except IndexError:
             print('{0} could not be loaded to the db'.format(a))
 
-# load_data_to_mongo(100, 'top_500', 'artists')
+load_data_to_mongo(500, 'top_500', 'artists')
 
 # artists = Artists(100)
 

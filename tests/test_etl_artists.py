@@ -10,7 +10,7 @@ class ArtistTest(unittest.TestCase):
 
     def test_top_artist(self):
         self.assertEqual(
-            ['664c3e0e-42d8-48c1-b209-1efca19c0325', 'The National', '780'], ArtistTest.lfm.artists_playcounts[0])
+            ['664c3e0e-42d8-48c1-b209-1efca19c0325', 'The National', '781'], ArtistTest.lfm.artists_playcounts[0])
 
     def test_151st_artist(self):
         self.assertEqual(
@@ -63,7 +63,7 @@ class ArtistIncrTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        ArtistIncrTest.a = artists.ArtistIncr(10, 'top_500', 'artists')
+        ArtistIncrTest.a = artists.ArtistIncr(10)
 
     def test_len_artists(self):
         self.assertEqual(10, len(ArtistIncrTest.a.artists.artists_playcounts))
@@ -71,3 +71,7 @@ class ArtistIncrTest(unittest.TestCase):
     def test_len_first_result(self):
         self.assertEqual(
             3, len(ArtistIncrTest.a.artists.artists_playcounts[0]))
+
+    def test_first_value(self):
+        self.assertEqual(['664c3e0e-42d8-48c1-b209-1efca19c0325', 'The National',
+                          '781'], ArtistIncrTest.a.artists.artists_playcounts[0])

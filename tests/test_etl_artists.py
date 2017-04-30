@@ -57,3 +57,17 @@ class ReviewsTest(unittest.TestCase):
 
     def test_average_score(self):
         self.assertEqual(7.49, ReviewsTest.r.average_score)
+
+
+class ArtistIncrTest(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        ArtistIncrTest.a = artists.ArtistIncr(10, 'top_500', 'artists')
+
+    def test_len_artists(self):
+        self.assertEqual(10, len(ArtistIncrTest.a.artists.artists_playcounts))
+
+    def test_len_first_result(self):
+        self.assertEqual(
+            3, len(ArtistIncrTest.a.artists.artists_playcounts[0]))

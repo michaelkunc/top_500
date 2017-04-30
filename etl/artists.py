@@ -87,10 +87,15 @@ def load_data_to_mongo(number_of_artists, db, collection):
 
 # load_data_to_mongo(500, 'top_500', 'artists')
 
-# artists = Artists(100)
 
-# print(artists.artists_playcounts[81])
+class ArtistIncr(object):
 
-# need to write some error handling to take care of non-foreign id artists. Specfically 'Good Enough for England' and
-# Julien Baker'. Prbably put some error handling up in the property for
-# the Artist, so it never gets to the reviews.
+    def __init__(self, number_of_artists, db, collection):
+        self.client = MongoClient('localhost', 27017)
+        self.db = self.client[db]
+        self.collection = collection
+        self.artists = Artists(number_of_artists)
+
+# incr = ArtistIncr(500, 'top_500', 'artists')
+
+# print(incr.artists.artists_playcounts)

@@ -85,7 +85,7 @@ def load_data_to_mongo(number_of_artists, db, collection):
         except IndexError:
             print('{0} could not be loaded to the db'.format(a))
 
-load_data_to_mongo(500, 'top_500', 'artists')
+# load_data_to_mongo(500, 'top_500', 'artists')
 
 # artists = Artists(100)
 

@@ -2,9 +2,6 @@ import requests
 import os
 from flask_pymongo import MongoClient
 
-MONGO = {'HOST': 'localhost', 'PORT': 27017,
-         'db': 'top_500', 'collection': 'artists'}
-
 CLIENT = MongoClient('localhost', 27017)
 DB = CLIENT['top_500']
 COLLECTION = DB['artists']
@@ -72,23 +69,6 @@ class Reviews(object):
             return 'No Reviews'
 
 
-def load_data_to_mongo(number_of_artists):
-
-    artist = Artists(number_of_artists)
-    for a in artist.artists_playcounts:
-        try:
-            reviews = Reviews(a[0])
-            artist_id, artist, playcount, avg_score, releases = a[
-                0], a[1], a[2], reviews.average_score, reviews.releases
-            key = {'_id': artist_id}
-            data = {'artist_name': artist, 'playcount': playcount,
-                    'average_score': avg_score, 'releases': releases}
-            COLLECTION.replace_one(key, data, True)
-            print('{0} was loaded to MongoDB!'.format(data))
-        except IndexError:
-            print('{0} could not be loaded to the db'.format(a))
-
-
 class ArtistFull(object):
 
     def __init__(self, number_of_artists):
@@ -141,25 +121,20 @@ class ArtistIncr(object):
                     print('{0} was updated to MongoDB!'.format(data))
             except (IndexError, KeyError):
                 print('no releases!')
-# psudocode
-# for each artist
-# 1. get the list of releases from Mongo
-# 2. get the list of releases from Musikki
-# 3. compare the two.
 
-if __name__ == '__main__':
-    from timeit import Timer
-    number = 1
-    a = Artists(number)
-    t = Timer(lambda: a.artists_playcounts)
-    t = t.timeit(number=number)
-    print('the artist and playcount call takes {0} minutes'.format(
-        str(t * 500 / 60)))
-    r = Reviews('664c3e0e-42d8-48c1-b209-1efca19c0325')
-    t = Timer(lambda: r.releases)
-    t = t.timeit(number=number)
-    print('the releases call takes {0} minutes'.format(str(t * 500 / 60)))
-    t = Timer(lambda: r.average_score)
-    t = t.timeit(number=number)
-    print('the average score calculation takes {0} minutes'.format(
-        str(t * 500 / 60)))
+# if __name__ == '__main__':
+#     from timeit import Timer
+#     number = 1
+#     a = Artists(number)
+#     t = Timer(lambda: a.artists_playcounts)
+#     t = t.timeit(number=number)
+#     print('the artist and playcount call takes {0} minutes'.format(
+#         str(t * 500 / 60)))
+#     r = Reviews('664c3e0e-42d8-48c1-b209-1efca19c0325')
+#     t = Timer(lambda: r.releases)
+#     t = t.timeit(number=number)
+#     print('the releases call takes {0} minutes'.format(str(t * 500 / 60)))
+#     t = Timer(lambda: r.average_score)
+#     t = t.timeit(number=number)
+#     print('the average score calculation takes {0} minutes'.format(
+#         str(t * 500 / 60)))

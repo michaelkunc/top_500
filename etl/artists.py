@@ -102,6 +102,8 @@ class ArtistIncr(object):
                 key, {'$set': {'playcount': playcount}}, upsert=True)
             print('The record for {0} was updated in MongoDB!'.format(artist))
 
+# this could be improved massively.
+
     def update_ratings(self):
         for a in self.artists.artists_playcounts:
             try:
@@ -109,7 +111,7 @@ class ArtistIncr(object):
                     {'_id': a[0]}, {'_id': 0, 'releases': 1})['releases']
                 new_releases = Reviews(a[0]).releases
                 if set(releases) - set(new_releases) == set():
-                    pass
+                    print('{0} has no new releases'.format(a[1]))
                 else:
                     reviews = Reviews(a[0])
                     artist_id, artist, playcount, avg_score, releases = a[

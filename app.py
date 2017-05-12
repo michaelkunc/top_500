@@ -5,17 +5,11 @@ from bokeh.resources import INLINE
 from bokeh.util.string import encode_utf8
 from flask_pymongo import MongoClient
 import pandas as pd
-from celery import Celery
 
-from etl import albums, artists
+from etl import albums
 
 
 app = Flask(__name__)
-app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
-app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
-
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
 
 
 @app.route("/albums")
@@ -74,12 +68,6 @@ def artists_visualizatioons():
                            css_resources=css_resources)
 
     return encode_utf8(html)
-
-
-@celery.task
-def update_playcounts():
-    incr = artists.ArtistIncr(1)
-    return incr.update_playcounts()
 
 
 if __name__ == '__main__':

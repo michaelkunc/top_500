@@ -9,13 +9,7 @@ class Albums(object):
             lambda row: self._add_decade(row), axis=1)
         self.df = self._normalize_genre()
 
-    def albums_by_artist(self, number_of_artists=10):
-        return self.df.groupby('Artist').size().sort_values(ascending=False).head(number_of_artists)
-
-    def group_by_attribute(self, attribute):
-        return self.df.groupby(attribute).size()
-
-    def get_genres_by_years(self):
+    def genres_by_years(self):
         # this is a little ugly and I need to review, but the very basics of
         # the plot work
         genres = self.df
@@ -29,15 +23,15 @@ class Albums(object):
     def _add_decade(self, row):
         if row['Year'] > 2010:
             return "2010's"
-        if row['Year'] > 2000:
+        elif row['Year'] > 2000:
             return "2000's"
-        if row['Year'] > 1990:
+        elif row['Year'] > 1990:
             return "1990's"
-        if row['Year'] > 1980:
+        elif row['Year'] > 1980:
             return "1980's"
-        if row['Year'] > 1970:
+        elif row['Year'] > 1970:
             return "1970's"
-        if row["Year"] > 1960:
+        elif row["Year"] > 1960:
             return "1960's"
         else:
             return "1950's"
@@ -51,3 +45,17 @@ class Albums(object):
         self.df['Normalized Genre'] = self.df['Normalized Genre'].map(
             lambda x: [i.strip() for i in x.split(',')])
         return self.df
+
+
+# it might make sense to not be a class
+
+# albums = Albums()
+# albums.df.to_csv('etl/csvs/album_frame.csv')
+# year = albums.group_by_attribute('Year')
+# decade = albums.group_by_attribute('Decade')
+# artist = albums.albums_by_artist()
+# genre = albums.genres_by_years()
+# frames = {'year': year,
+#           'decade': decade, 'artist': artist, 'genre': genre}
+# for key, value in frames.items():
+#     value.to_csv('etl/csvs/{0}.csv'.format(key))

@@ -6,27 +6,26 @@ from bokeh.util.string import encode_utf8
 from flask_pymongo import MongoClient
 import pandas as pd
 
-from etl import albums
-
 
 app = Flask(__name__)
 
 
 @app.route("/albums")
 def visualization():
-    album_df = albums.Albums()
+    df = pd.read_csv('etl/csvs/album_frame.csv')
     js_resources = INLINE.render_js()
     css_resources = INLINE.render_css()
 
-    by_year = bc.Area(album_df.group_by_attribute('Year'),
+    by_year = bc.Area(df.groupby('Year').size(),
                       title='Albums By Year', legend=None)
 
-    by_decade = bc.Bar(album_df.group_by_attribute('Decade'),
+    by_decade = bc.Bar(df.groupby('Decade').size(),
                        title='Albums By Decade', legend=None)
 
-    by_artist = bc.Line(album_df.albums_by_artist(), legend=None)
+    by_artist = bc.Line(df.groupby('Artist').size().sort_values(
+        ascending=False).head(10), legend=None)
 
-    by_genre = bc.Line(album_df.get_genres_by_years(), legend='top_right',
+    by_genre = bc.Line(pd.read_csv('etl/csvs/genre.csv'), legend='top_right',
                        title='Albums by Genre')
 
     script, year_div = components(by_year)

@@ -6,9 +6,13 @@ from bokeh.util.string import encode_utf8
 from flask_pymongo import MongoClient
 import pandas as pd
 import boto3
-
+import os
 
 app = Flask(__name__)
+
+s3 = boto3.client('s3')
+response = s3.get_object(Bucket=os['BUCKET'], Key='csvs/album_frame.csv')
+album_frame = response['Body'].read()
 
 
 @app.route("/albums")

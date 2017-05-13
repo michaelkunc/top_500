@@ -5,32 +5,30 @@ from bokeh.resources import INLINE
 from bokeh.util.string import encode_utf8
 from flask_pymongo import MongoClient
 import pandas as pd
-import boto3
-import os
 
 app = Flask(__name__)
-
-s3 = boto3.client('s3')
-response = s3.get_object(Bucket=os['BUCKET'], Key='csvs/album_frame.csv')
-album_frame = response['Body'].read()
 
 
 @app.route("/albums")
 def visualization():
-    df = pd.read_csv('etl/csvs/album_frame.csv')
+    album_frame = pd.read_csv(
+        'https://s3-us-west-1.amazonaws.com/rollingstonetop500/csvs/album_frame.csv')
+    genre_frame = pd.read_csv(
+        'https://s3-us-west-1.amazonaws.com/rollingstonetop500/csvs/genre.csv')
+
     js_resources = INLINE.render_js()
     css_resources = INLINE.render_css()
 
-    by_year = bc.Area(df.groupby('Year').size(),
+    by_year = bc.Area(album_frame.groupby('Year').size(),
                       title='Albums By Year', legend=None)
 
-    by_decade = bc.Bar(df.groupby('Decade').size(),
+    by_decade = bc.Bar(album_frame.groupby('Decade').size(),
                        title='Albums By Decade', legend=None)
 
-    by_artist = bc.Line(df.groupby('Artist').size().sort_values(
+    by_artist = bc.Line(album_frame.groupby('Artist').size().sort_values(
         ascending=False).head(10), legend=None)
 
-    by_genre = bc.Line(pd.read_csv('etl/csvs/genre.csv'), legend='top_right',
+    by_genre = bc.Line(genre_frame, legend='top_right',
                        title='Albums by Genre')
 
     script, year_div = components(by_year)

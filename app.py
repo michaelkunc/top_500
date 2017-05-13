@@ -5,6 +5,7 @@ from bokeh.resources import INLINE
 from bokeh.util.string import encode_utf8
 from flask_pymongo import MongoClient
 import pandas as pd
+import boto3
 
 
 app = Flask(__name__)
